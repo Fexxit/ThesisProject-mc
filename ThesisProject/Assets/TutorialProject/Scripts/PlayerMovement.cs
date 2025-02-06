@@ -4,17 +4,20 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     Rigidbody characterRB;
     Vector3 movementInput;
-    Vector3 movementVector;
+    public Vector3 movementVector;
     [SerializeField] float jumpPower;
     [SerializeField] float movementSpeed;
+
+    private Animator animator;
 
     void Start()
     {
         characterRB = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -25,6 +28,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void OnMovement(InputValue input)
     {
+        animator.SetBool("IsMoving", true);
+
         input.Get<Vector2>();
 
         movementInput = new Vector3(input.Get<Vector2>().x, 0, input.Get<Vector2>().y);
@@ -42,6 +47,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void OnMovementStop(InputValue input)
     {
+        animator.SetBool("IsMoving", false);
+
         movementVector = Vector3.zero;
     }
 
